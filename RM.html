@@ -5,20 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intellectual Property Rights: A Comprehensive Guide</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Merriweather', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
                     },
                     colors: {
-                        slate: {
-                            850: '#1e293b',
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
                         }
                     }
                 }
@@ -37,10 +54,10 @@
         }
         
         .active-nav {
-            border-left-color: #3b82f6;
-            color: #1e293b;
+            color: #2563eb;
             font-weight: 600;
-            background-color: #f1f5f9;
+            background-color: rgba(59, 130, 246, 0.08);
+            border-right: 3px solid #2563eb;
         }
         
         /* Smooth fade in for content */
@@ -54,388 +71,657 @@
             opacity: 1;
             transform: none;
         }
+
+        /* Glass effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
     </style>
 </head>
-<body class="bg-white text-slate-600 font-sans antialiased">
+<body class="bg-slate-50 text-slate-600 font-sans antialiased relative overflow-x-hidden">
+
+    <!-- Ambient Background Blobs -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-primary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+        <div class="absolute top-0 right-0 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-32 left-20 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+    </div>
 
     <!-- Mobile Header -->
-    <header class="lg:hidden fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-slate-200 z-50 px-4 py-3 flex justify-between items-center">
-        <h1 class="font-serif text-lg font-bold text-slate-900">IPR Guide</h1>
-        <button id="menu-btn" class="text-slate-600 hover:text-slate-900 focus:outline-none">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+    <header class="lg:hidden fixed top-0 w-full glass border-b border-slate-200 z-50 px-6 py-4 flex justify-between items-center shadow-sm">
+        <h1 class="font-serif text-xl font-bold text-slate-900">IPR Guide</h1>
+        <button id="menu-btn" class="text-slate-600 hover:text-primary-600 focus:outline-none transition-colors">
+            <i data-lucide="menu" class="w-6 h-6"></i>
         </button>
     </header>
 
     <!-- Mobile Menu Overlay -->
-    <div id="mobile-menu" class="fixed inset-0 bg-slate-900/50 z-40 hidden lg:hidden">
-        <div class="absolute right-0 top-0 h-full w-64 bg-white shadow-xl p-6 overflow-y-auto transform transition-transform duration-300 translate-x-full" id="mobile-menu-panel">
-            <div class="flex justify-end mb-6">
-                <button id="close-menu-btn" class="text-slate-500 hover:text-slate-900">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    <div id="mobile-menu" class="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity duration-300">
+        <div class="absolute right-0 top-0 h-full w-72 bg-white shadow-2xl p-6 overflow-y-auto transform transition-transform duration-300 translate-x-full" id="mobile-menu-panel">
+            <div class="flex justify-between items-center mb-8 border-b border-slate-100 pb-4">
+                <span class="font-serif font-bold text-lg text-slate-900">Contents</span>
+                <button id="close-menu-btn" class="text-slate-400 hover:text-slate-900 transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
-            <nav class="space-y-4" id="mobile-nav-links">
+            <nav class="space-y-1" id="mobile-nav-links">
                 <!-- Links injected via JS -->
             </nav>
         </div>
     </div>
 
-    <div class="flex max-w-7xl mx-auto min-h-screen pt-16 lg:pt-0">
+    <div class="flex max-w-8xl mx-auto min-h-screen pt-16 lg:pt-0">
         
         <!-- Sidebar Navigation (Desktop) -->
-        <aside class="hidden lg:block w-72 fixed h-screen overflow-y-auto border-r border-slate-100 py-12 px-8 no-scrollbar">
-            <div class="mb-10">
-                <h1 class="font-serif text-2xl font-bold text-slate-900 tracking-tight">IPR Guide</h1>
-                <p class="text-xs text-slate-400 mt-2 font-medium uppercase tracking-wider">Table of Contents</p>
+        <aside class="hidden lg:block w-80 fixed h-screen overflow-y-auto border-r border-slate-200/60 bg-white/50 backdrop-blur-md py-12 px-6 no-scrollbar z-10">
+            <div class="mb-12 px-4">
+                <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-purple-600 rounded-xl mb-4 flex items-center justify-center shadow-lg shadow-primary-500/30">
+                    <i data-lucide="book-open" class="text-white w-6 h-6"></i>
+                </div>
+                <h1 class="font-serif text-2xl font-bold text-slate-900 tracking-tight">IPR Handbook</h1>
+                <p class="text-xs text-slate-400 mt-2 font-medium uppercase tracking-wider">Comprehensive Guide</p>
             </div>
             <nav class="space-y-1 relative" id="desktop-nav">
                 <!-- Navigation Items -->
-                <a href="#intro" class="nav-link block pl-4 py-2 border-l-2 border-transparent text-sm hover:text-slate-900 hover:border-slate-300 transition-colors">1. Introduction to IPR</a>
-                <a href="#types" class="nav-link block pl-4 py-2 border-l-2 border-transparent text-sm hover:text-slate-900 hover:border-slate-300 transition-colors">2. Types of IPR</a>
-                <a href="#patentability" class="nav-link block pl-4 py-2 border-l-2 border-transparent text-sm hover:text-slate-900 hover:border-slate-300 transition-colors">3. Patentability</a>
-                <a href="#patent-docs" class="nav-link block pl-4 py-2 border-l-2 border-transparent text-sm hover:text-slate-900 hover:border-slate-300 transition-colors">4. Patent Documents</a>
-                <a href="#searches" class="nav-link block pl-4 py-2 border-l-2 border-transparent text-sm hover:text-slate-900 hover:border-slate-300 transition-colors">5. Patent Searches</a>
-                <a href="#databases" class="nav-link block pl-4 py-2 border-l-2 border-transparent text-sm hover:text-slate-900 hover:border-slate-300 transition-colors">6. Patent Databases</a>
-                <a href="#strategy" class="nav-link block pl-4 py-2 border-l-2 border-transparent text-sm hover:text-slate-900 hover:border-slate-300 transition-colors">7. Strategic Use</a>
-                <a href="#copyright" class="nav-link block pl-4 py-2 border-l-2 border-transparent text-sm hover:text-slate-900 hover:border-slate-300 transition-colors">8. Copyright</a>
-                <a href="#trademarks" class="nav-link block pl-4 py-2 border-l-2 border-transparent text-sm hover:text-slate-900 hover:border-slate-300 transition-colors">9. Trademarks</a>
-                <a href="#traditional" class="nav-link block pl-4 py-2 border-l-2 border-transparent text-sm hover:text-slate-900 hover:border-slate-300 transition-colors">10. Traditional Knowledge</a>
-                <a href="#it-software" class="nav-link block pl-4 py-2 border-l-2 border-transparent text-sm hover:text-slate-900 hover:border-slate-300 transition-colors">11. IPR in IT</a>
-                <a href="#semiconductor" class="nav-link block pl-4 py-2 border-l-2 border-transparent text-sm hover:text-slate-900 hover:border-slate-300 transition-colors">12. Semiconductors</a>
-                <a href="#treaties" class="nav-link block pl-4 py-2 border-l-2 border-transparent text-sm hover:text-slate-900 hover:border-slate-300 transition-colors">13. Treaties</a>
-                <a href="#updates" class="nav-link block pl-4 py-2 border-l-2 border-transparent text-sm hover:text-slate-900 hover:border-slate-300 transition-colors">14. Amendments</a>
+                <a href="#intro" class="nav-link block px-4 py-2.5 rounded-l-lg text-sm text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all duration-200 group">
+                    <span class="inline-block w-6 text-xs text-slate-400 group-hover:text-primary-400 font-mono">01</span> Introduction
+                </a>
+                <a href="#types" class="nav-link block px-4 py-2.5 rounded-l-lg text-sm text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all duration-200 group">
+                    <span class="inline-block w-6 text-xs text-slate-400 group-hover:text-primary-400 font-mono">02</span> Types of IPR
+                </a>
+                <a href="#patentability" class="nav-link block px-4 py-2.5 rounded-l-lg text-sm text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all duration-200 group">
+                    <span class="inline-block w-6 text-xs text-slate-400 group-hover:text-primary-400 font-mono">03</span> Patentability
+                </a>
+                <a href="#patent-docs" class="nav-link block px-4 py-2.5 rounded-l-lg text-sm text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all duration-200 group">
+                    <span class="inline-block w-6 text-xs text-slate-400 group-hover:text-primary-400 font-mono">04</span> Documents
+                </a>
+                <a href="#searches" class="nav-link block px-4 py-2.5 rounded-l-lg text-sm text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all duration-200 group">
+                    <span class="inline-block w-6 text-xs text-slate-400 group-hover:text-primary-400 font-mono">05</span> Patent Searches
+                </a>
+                <a href="#databases" class="nav-link block px-4 py-2.5 rounded-l-lg text-sm text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all duration-200 group">
+                    <span class="inline-block w-6 text-xs text-slate-400 group-hover:text-primary-400 font-mono">06</span> Databases
+                </a>
+                <a href="#strategy" class="nav-link block px-4 py-2.5 rounded-l-lg text-sm text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all duration-200 group">
+                    <span class="inline-block w-6 text-xs text-slate-400 group-hover:text-primary-400 font-mono">07</span> Strategy
+                </a>
+                <a href="#copyright" class="nav-link block px-4 py-2.5 rounded-l-lg text-sm text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all duration-200 group">
+                    <span class="inline-block w-6 text-xs text-slate-400 group-hover:text-primary-400 font-mono">08</span> Copyright
+                </a>
+                <a href="#trademarks" class="nav-link block px-4 py-2.5 rounded-l-lg text-sm text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all duration-200 group">
+                    <span class="inline-block w-6 text-xs text-slate-400 group-hover:text-primary-400 font-mono">09</span> Trademarks
+                </a>
+                <a href="#traditional" class="nav-link block px-4 py-2.5 rounded-l-lg text-sm text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all duration-200 group">
+                    <span class="inline-block w-6 text-xs text-slate-400 group-hover:text-primary-400 font-mono">10</span> Traditional Knowledge
+                </a>
+                <a href="#it-software" class="nav-link block px-4 py-2.5 rounded-l-lg text-sm text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all duration-200 group">
+                    <span class="inline-block w-6 text-xs text-slate-400 group-hover:text-primary-400 font-mono">11</span> IPR in IT
+                </a>
+                <a href="#semiconductor" class="nav-link block px-4 py-2.5 rounded-l-lg text-sm text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all duration-200 group">
+                    <span class="inline-block w-6 text-xs text-slate-400 group-hover:text-primary-400 font-mono">12</span> Semiconductors
+                </a>
+                <a href="#treaties" class="nav-link block px-4 py-2.5 rounded-l-lg text-sm text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all duration-200 group">
+                    <span class="inline-block w-6 text-xs text-slate-400 group-hover:text-primary-400 font-mono">13</span> Treaties
+                </a>
+                <a href="#updates" class="nav-link block px-4 py-2.5 rounded-l-lg text-sm text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all duration-200 group">
+                    <span class="inline-block w-6 text-xs text-slate-400 group-hover:text-primary-400 font-mono">14</span> Amendments
+                </a>
             </nav>
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 lg:ml-72 p-6 md:p-12 lg:p-16 max-w-4xl mx-auto">
+        <main class="flex-1 lg:ml-80 p-6 md:p-16 lg:p-24 max-w-5xl mx-auto">
             
-            <div class="mb-16">
-                <p class="text-blue-600 font-semibold tracking-wide uppercase text-sm mb-2">The Ultimate Handbook</p>
-                <h1 class="font-serif text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-6">Intellectual Property Rights</h1>
-                <p class="text-xl text-slate-500 font-light leading-relaxed">
-                    A detailed breakdown of laws, rights, and strategies protecting creations of the mind.
+            <!-- Hero Section -->
+            <div class="mb-24 relative">
+                <div class="inline-flex items-center space-x-2 bg-white border border-primary-100 rounded-full px-4 py-1.5 mb-6 shadow-sm">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
+                    </span>
+                    <span class="text-xs font-semibold tracking-wide uppercase text-slate-500">Ultimate Handbook</span>
+                </div>
+                <h1 class="font-serif text-5xl md:text-7xl font-bold text-slate-900 leading-tight mb-8">
+                    Intellectual Property <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-purple-600">Rights & Laws</span>
+                </h1>
+                <p class="text-xl text-slate-500 font-light leading-relaxed max-w-2xl border-l-4 border-primary-200 pl-6">
+                    A modern, detailed breakdown of laws, rights, and strategies designed to protect the creations of the mind in a digital world.
                 </p>
             </div>
 
-            <hr class="border-slate-200 mb-16">
-
             <!-- 1. Introduction -->
-            <section id="intro" class="fade-in-section mb-20 scroll-mt-24">
-                <span class="text-slate-300 font-bold text-6xl opacity-20 -ml-4 select-none">01</span>
-                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-6 -mt-8">Introduction to IPR</h2>
-                <div class="prose prose-slate prose-lg text-slate-600">
-                    <p class="mb-4">
+            <section id="intro" class="fade-in-section mb-32 scroll-mt-24 relative">
+                <div class="absolute -left-12 -top-10 text-9xl font-bold text-slate-100 -z-10 select-none font-serif opacity-70">01</div>
+                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-8 flex items-center">
+                    Introduction to IPR
+                </h2>
+                <div class="prose prose-slate prose-lg text-slate-600 max-w-none">
+                    <p class="lead">
                         Intellectual Property Rights (IPR) are legal rights given to persons over the creations of their minds. They usually give the creator an exclusive right over the use of his/her creation for a certain period of time.
                     </p>
-                    <p>
-                        The importance of IPR was first recognized in the Paris Convention for the Protection of Industrial Property (1883) and the Berne Convention for the Protection of Literary and Artistic Works (1886). Both are administered by the World Intellectual Property Organization (WIPO).
-                    </p>
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 my-8">
+                        <p class="m-0 italic text-slate-700 font-serif text-xl text-center">
+                            "The importance of IPR was first recognized in the Paris Convention (1883) and the Berne Convention (1886)."
+                        </p>
+                    </div>
                 </div>
-                <div class="mt-6">
-                    <a href="https://www.wipo.int/about-ip/en/" target="_blank" class="inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors group">
-                        Read more at WIPO
-                        <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                <div class="mt-8 flex gap-4 items-center flex-wrap">
+                    <a href="https://www.wipo.int/about-ip/en/" target="_blank" class="inline-flex items-center px-5 py-2.5 rounded-full bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/20 group">
+                        Explore WIPO
+                        <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="https://en.wikipedia.org/wiki/Intellectual_property" target="_blank" class="text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors flex items-center">
+                        <i data-lucide="book" class="w-4 h-4 mr-2"></i> Wikipedia Article
                     </a>
                 </div>
             </section>
 
             <!-- 2. Types of IPR -->
-            <section id="types" class="fade-in-section mb-20 scroll-mt-24">
-                <span class="text-slate-300 font-bold text-6xl opacity-20 -ml-4 select-none">02</span>
-                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-6 -mt-8">Types of IPR</h2>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-100">
-                        <h3 class="font-bold text-slate-900 mb-2">Patents</h3>
-                        <p class="text-sm">Exclusive rights for an invention, a product, or a process that provides a new way of doing something.</p>
+            <section id="types" class="fade-in-section mb-32 scroll-mt-24 relative">
+                <div class="absolute -left-12 -top-10 text-9xl font-bold text-slate-100 -z-10 select-none font-serif opacity-70">02</div>
+                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-10">Types of IPR</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Card 1 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col">
+                        <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
+                            <i data-lucide="lightbulb" class="text-blue-600 w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 mb-2 text-lg">Patents</h3>
+                        <p class="text-sm text-slate-500 leading-relaxed mb-4">Exclusive rights for an invention, providing a new technical solution to a problem.</p>
+                        <a href="https://en.wikipedia.org/wiki/Patent" target="_blank" class="mt-auto text-xs font-semibold text-primary-600 hover:text-primary-700 inline-flex items-center">
+                            Read Wiki <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                        </a>
                     </div>
-                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-100">
-                        <h3 class="font-bold text-slate-900 mb-2">Copyright</h3>
-                        <p class="text-sm">Rights of creators over their literary and artistic works (books, music, paintings, films).</p>
+                    <!-- Card 2 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col">
+                        <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-purple-100 transition-colors">
+                            <i data-lucide="music" class="text-purple-600 w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 mb-2 text-lg">Copyright</h3>
+                        <p class="text-sm text-slate-500 leading-relaxed mb-4">Rights over literary and artistic works like books, music, paintings, and films.</p>
+                        <a href="https://en.wikipedia.org/wiki/Copyright" target="_blank" class="mt-auto text-xs font-semibold text-primary-600 hover:text-primary-700 inline-flex items-center">
+                            Read Wiki <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                        </a>
                     </div>
-                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-100">
-                        <h3 class="font-bold text-slate-900 mb-2">Trademarks</h3>
-                        <p class="text-sm">A sign capable of distinguishing the goods or services of one enterprise from those of other enterprises.</p>
+                    <!-- Card 3 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col">
+                        <div class="w-12 h-12 bg-pink-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-pink-100 transition-colors">
+                            <i data-lucide="tag" class="text-pink-600 w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 mb-2 text-lg">Trademarks</h3>
+                        <p class="text-sm text-slate-500 leading-relaxed mb-4">A sign distinguishing the goods or services of one enterprise from others.</p>
+                        <a href="https://en.wikipedia.org/wiki/Trademark" target="_blank" class="mt-auto text-xs font-semibold text-primary-600 hover:text-primary-700 inline-flex items-center">
+                            Read Wiki <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                        </a>
                     </div>
-                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-100">
-                        <h3 class="font-bold text-slate-900 mb-2">Geographical Indications</h3>
-                        <p class="text-sm">Signs used on goods that have a specific geographical origin (e.g., Champagne, Darjeeling Tea).</p>
+                    <!-- Card 4 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col">
+                        <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-100 transition-colors">
+                            <i data-lucide="map-pin" class="text-emerald-600 w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 mb-2 text-lg">Geo Indications</h3>
+                        <p class="text-sm text-slate-500 leading-relaxed mb-4">Signs used on goods that have a specific geographical origin (e.g., Champagne).</p>
+                        <a href="https://en.wikipedia.org/wiki/Geographical_indication" target="_blank" class="mt-auto text-xs font-semibold text-primary-600 hover:text-primary-700 inline-flex items-center">
+                            Read Wiki <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                        </a>
                     </div>
-                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-100">
-                        <h3 class="font-bold text-slate-900 mb-2">Industrial Designs</h3>
-                        <p class="text-sm">The ornamental or aesthetic aspect of an article, consisting of 3D features (shape) or 2D features (patterns).</p>
+                    <!-- Card 5 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col">
+                        <div class="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-orange-100 transition-colors">
+                            <i data-lucide="box" class="text-orange-600 w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 mb-2 text-lg">Industrial Designs</h3>
+                        <p class="text-sm text-slate-500 leading-relaxed mb-4">The ornamental or aesthetic aspect of an article, consisting of 3D or 2D features.</p>
+                        <a href="https://en.wikipedia.org/wiki/Industrial_design_right" target="_blank" class="mt-auto text-xs font-semibold text-primary-600 hover:text-primary-700 inline-flex items-center">
+                            Read Wiki <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                        </a>
                     </div>
-                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-100">
-                        <h3 class="font-bold text-slate-900 mb-2">Trade Secrets</h3>
-                        <p class="text-sm">IP rights on confidential information which may be sold or licensed (e.g., Coca-Cola formula).</p>
+                    <!-- Card 6 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col">
+                        <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-slate-200 transition-colors">
+                            <i data-lucide="lock" class="text-slate-600 w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 mb-2 text-lg">Trade Secrets</h3>
+                        <p class="text-sm text-slate-500 leading-relaxed mb-4">IP rights on confidential info which may be sold or licensed (e.g., recipes).</p>
+                        <a href="https://en.wikipedia.org/wiki/Trade_secret" target="_blank" class="mt-auto text-xs font-semibold text-primary-600 hover:text-primary-700 inline-flex items-center">
+                            Read Wiki <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                        </a>
                     </div>
                 </div>
             </section>
 
             <!-- 3. Patentability -->
-            <section id="patentability" class="fade-in-section mb-20 scroll-mt-24">
-                <span class="text-slate-300 font-bold text-6xl opacity-20 -ml-4 select-none">03</span>
-                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-6 -mt-8">Patentability & Non-Patentable</h2>
-                <div class="prose prose-slate prose-lg text-slate-600">
-                    <p class="mb-4">To be patentable, an invention must typically satisfy three criteria:</p>
-                    <ul class="list-disc pl-5 space-y-2 mb-6">
-                        <li><strong>Novelty:</strong> The invention must be new and not part of the "prior art."</li>
-                        <li><strong>Inventive Step (Non-Obviousness):</strong> It could not be deduced by a person with average knowledge in the technical field.</li>
-                        <li><strong>Industrial Applicability (Utility):</strong> It must be capable of being used in some kind of industry.</li>
-                    </ul>
-                    <div class="bg-red-50 p-4 border-l-4 border-red-400 rounded-r">
-                        <h4 class="font-bold text-red-800 text-sm mb-1 uppercase">Not Patentable</h4>
-                        <p class="text-sm text-red-700">Scientific theories, mathematical methods, plant or animal varieties, and discoveries of natural substances are generally not patentable.</p>
+            <section id="patentability" class="fade-in-section mb-32 scroll-mt-24 relative">
+                <div class="absolute -left-12 -top-10 text-9xl font-bold text-slate-100 -z-10 select-none font-serif opacity-70">03</div>
+                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-8">Patentability Criteria</h2>
+                <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-lg relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary-50 rounded-full -mr-10 -mt-10 blur-2xl"></div>
+                    
+                    <div class="space-y-8 relative z-10">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold mr-4">1</div>
+                            <div>
+                                <h4 class="text-lg font-bold text-slate-900">Novelty</h4>
+                                <p class="text-slate-600 mt-1">The invention must be new and not part of the existing "prior art" anywhere in the world.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold mr-4">2</div>
+                            <div>
+                                <h4 class="text-lg font-bold text-slate-900">Inventive Step</h4>
+                                <p class="text-slate-600 mt-1">It must not be obvious to a person with average knowledge in that specific technical field.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold mr-4">3</div>
+                            <div>
+                                <h4 class="text-lg font-bold text-slate-900">Industrial Application</h4>
+                                <p class="text-slate-600 mt-1">The invention must be capable of being made or used in some kind of industry.</p>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="mt-8 bg-red-50/50 rounded-xl p-6 border border-red-100 flex items-start gap-4">
+                        <i data-lucide="alert-circle" class="text-red-500 w-6 h-6 flex-shrink-0 mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-red-900 text-sm uppercase tracking-wide mb-1">Non-Patentable Subject Matter</h4>
+                            <p class="text-sm text-red-700/80">Scientific theories, mathematical methods, plant or animal varieties, and mere discoveries of natural substances are generally excluded from patentability.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 text-right">
+                    <a href="https://en.wikipedia.org/wiki/Patentability" target="_blank" class="text-xs font-medium text-slate-400 hover:text-primary-600 transition-colors inline-flex items-center">
+                        Wiki: Patentability <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                    </a>
                 </div>
             </section>
 
             <!-- 4. Patent Documents -->
-            <section id="patent-docs" class="fade-in-section mb-20 scroll-mt-24">
-                <span class="text-slate-300 font-bold text-6xl opacity-20 -ml-4 select-none">04</span>
-                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-6 -mt-8">Patent Information & Documents</h2>
-                <div class="prose prose-slate prose-lg text-slate-600">
-                    <p>A patent document is a rich source of technical and legal information. Key components include:</p>
-                    <div class="mt-6 space-y-4">
-                        <div class="flex items-start">
-                            <span class="h-6 w-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold mt-1 mr-3 flex-shrink-0">1</span>
+            <section id="patent-docs" class="fade-in-section mb-32 scroll-mt-24 relative">
+                <div class="absolute -left-12 -top-10 text-9xl font-bold text-slate-100 -z-10 select-none font-serif opacity-70">04</div>
+                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-8">Anatomy of a Patent</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-slate-900 text-white p-8 rounded-3xl shadow-xl flex flex-col justify-between">
+                        <div>
+                            <div class="text-slate-400 text-xs font-mono mb-2">SECTION 01</div>
+                            <h3 class="text-2xl font-serif mb-4">The Claims</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed mb-6">The most critical part of the document. Claims define the legal boundaries of protection. If it's not in the claims, it's not protected.</p>
+                        </div>
+                        <div class="h-1 w-20 bg-primary-500 rounded-full"></div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                            <div class="p-3 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="file-text" class="w-5 h-5"></i></div>
                             <div>
-                                <strong class="text-slate-900">Bibliographic Data:</strong>
-                                <p class="text-sm mt-1">Title, inventor names, filing date, and classification codes (IPC/CPC).</p>
+                                <strong class="block text-slate-900 text-sm">Bibliographic Data</strong>
+                                <span class="text-xs text-slate-500">Title, inventors, filing dates.</span>
                             </div>
                         </div>
-                        <div class="flex items-start">
-                            <span class="h-6 w-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold mt-1 mr-3 flex-shrink-0">2</span>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                            <div class="p-3 bg-purple-50 text-purple-600 rounded-lg"><i data-lucide="align-left" class="w-5 h-5"></i></div>
                             <div>
-                                <strong class="text-slate-900">Abstract:</strong>
-                                <p class="text-sm mt-1">A brief summary of the invention.</p>
+                                <strong class="block text-slate-900 text-sm">Abstract</strong>
+                                <span class="text-xs text-slate-500">A concise summary of the invention.</span>
                             </div>
                         </div>
-                        <div class="flex items-start">
-                            <span class="h-6 w-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold mt-1 mr-3 flex-shrink-0">3</span>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                            <div class="p-3 bg-green-50 text-green-600 rounded-lg"><i data-lucide="image" class="w-5 h-5"></i></div>
                             <div>
-                                <strong class="text-slate-900">Description/Specification:</strong>
-                                <p class="text-sm mt-1">Detailed explanation enabling others skilled in the art to replicate the invention.</p>
+                                <strong class="block text-slate-900 text-sm">Drawings</strong>
+                                <span class="text-xs text-slate-500">Visual illustrations of the invention.</span>
                             </div>
                         </div>
-                        <div class="flex items-start">
-                            <span class="h-6 w-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold mt-1 mr-3 flex-shrink-0">4</span>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                            <div class="p-3 bg-orange-50 text-orange-600 rounded-lg"><i data-lucide="book" class="w-5 h-5"></i></div>
                             <div>
-                                <strong class="text-slate-900">Claims:</strong>
-                                <p class="text-sm mt-1">The most critical part; defines the legal boundaries of the protection.</p>
+                                <strong class="block text-slate-900 text-sm">Description</strong>
+                                <span class="text-xs text-slate-500">Full technical details enabling replication.</span>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="mt-4 text-right">
+                    <a href="https://en.wikipedia.org/wiki/Patent_application" target="_blank" class="text-xs font-medium text-slate-400 hover:text-primary-600 transition-colors inline-flex items-center">
+                        Wiki: Patent Applications <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                    </a>
                 </div>
             </section>
 
             <!-- 5. Search Types -->
-            <section id="searches" class="fade-in-section mb-20 scroll-mt-24">
-                <span class="text-slate-300 font-bold text-6xl opacity-20 -ml-4 select-none">05</span>
-                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-6 -mt-8">Types of Patent Searches</h2>
+            <section id="searches" class="fade-in-section mb-32 scroll-mt-24 relative">
+                <div class="absolute -left-12 -top-10 text-9xl font-bold text-slate-100 -z-10 select-none font-serif opacity-70">05</div>
+                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-8">Search Strategies</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="border border-slate-200 p-5 rounded hover:shadow-md transition-shadow">
-                        <h3 class="font-bold text-slate-800 mb-2">Novelty / Patentability Search</h3>
-                        <p class="text-sm text-slate-600">Conducted before filing to see if an invention is new.</p>
+                    <div class="border border-slate-200 p-6 rounded-2xl hover:bg-white hover:shadow-lg transition-all duration-300 group cursor-default">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-slate-800">Novelty Search</h3>
+                            <i data-lucide="search" class="w-5 h-5 text-slate-300 group-hover:text-primary-500 transition-colors"></i>
+                        </div>
+                        <p class="text-sm text-slate-600">Conducted before filing to ensure the invention is truly new.</p>
                     </div>
-                    <div class="border border-slate-200 p-5 rounded hover:shadow-md transition-shadow">
-                        <h3 class="font-bold text-slate-800 mb-2">Freedom to Operate (FTO)</h3>
-                        <p class="text-sm text-slate-600">Ensures that launching a product won't infringe existing patents in a specific region.</p>
+                    <div class="border border-slate-200 p-6 rounded-2xl hover:bg-white hover:shadow-lg transition-all duration-300 group cursor-default">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-slate-800">FTO (Freedom to Operate)</h3>
+                            <i data-lucide="shield-check" class="w-5 h-5 text-slate-300 group-hover:text-primary-500 transition-colors"></i>
+                        </div>
+                        <p class="text-sm text-slate-600">Ensures launching a product won't infringe existing active patents.</p>
                     </div>
-                    <div class="border border-slate-200 p-5 rounded hover:shadow-md transition-shadow">
-                        <h3 class="font-bold text-slate-800 mb-2">Invalidity Search</h3>
-                        <p class="text-sm text-slate-600">Done to find prior art that can invalidate a competitor's patent.</p>
+                    <div class="border border-slate-200 p-6 rounded-2xl hover:bg-white hover:shadow-lg transition-all duration-300 group cursor-default">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-slate-800">Invalidity Search</h3>
+                            <i data-lucide="x-circle" class="w-5 h-5 text-slate-300 group-hover:text-primary-500 transition-colors"></i>
+                        </div>
+                        <p class="text-sm text-slate-600">Finds prior art to invalidate a competitor's granted patent.</p>
                     </div>
-                    <div class="border border-slate-200 p-5 rounded hover:shadow-md transition-shadow">
-                        <h3 class="font-bold text-slate-800 mb-2">State-of-the-Art Search</h3>
-                        <p class="text-sm text-slate-600">Broad search to understand the current technology landscape.</p>
+                    <div class="border border-slate-200 p-6 rounded-2xl hover:bg-white hover:shadow-lg transition-all duration-300 group cursor-default">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-slate-800">Landscape Search</h3>
+                            <i data-lucide="map" class="w-5 h-5 text-slate-300 group-hover:text-primary-500 transition-colors"></i>
+                        </div>
+                        <p class="text-sm text-slate-600">Broad analysis to understand technology trends and competitors.</p>
                     </div>
+                </div>
+                <div class="mt-4 text-right">
+                    <a href="https://en.wikipedia.org/wiki/Patent_search" target="_blank" class="text-xs font-medium text-slate-400 hover:text-primary-600 transition-colors inline-flex items-center">
+                        Wiki: Patent Search <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                    </a>
                 </div>
             </section>
 
             <!-- 6. Databases -->
-            <section id="databases" class="fade-in-section mb-20 scroll-mt-24">
-                <span class="text-slate-300 font-bold text-6xl opacity-20 -ml-4 select-none">06</span>
-                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-6 -mt-8">Patent Databases</h2>
-                <p class="mb-6 text-slate-600">Accessing patent data is crucial for research. Major free and paid databases include:</p>
-                <div class="overflow-hidden border border-slate-200 rounded-lg">
-                    <table class="min-w-full divide-y divide-slate-200">
+            <section id="databases" class="fade-in-section mb-32 scroll-mt-24 relative">
+                <div class="absolute -left-12 -top-10 text-9xl font-bold text-slate-100 -z-10 select-none font-serif opacity-70">06</div>
+                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-8">Databases</h2>
+                <div class="overflow-hidden bg-white shadow-xl shadow-slate-200/50 rounded-2xl border border-slate-100">
+                    <table class="min-w-full divide-y divide-slate-100">
                         <thead class="bg-slate-50">
                             <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Database Name</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Description</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Database Name</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Description</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-slate-200">
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">Google Patents</td>
-                                <td class="px-6 py-4 text-sm text-slate-600">User-friendly, covers global patents, integrates with Google Scholar.</td>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-primary-600">Google Patents</td>
+                                <td class="px-6 py-4 text-sm text-slate-600">User-friendly, covers global patents, integrates with Scholar.</td>
                             </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">Espacenet</td>
-                                <td class="px-6 py-4 text-sm text-slate-600">Managed by EPO. Offers access to over 130 million documents worldwide.</td>
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-primary-600">Espacenet</td>
+                                <td class="px-6 py-4 text-sm text-slate-600">Managed by EPO. Access to 130M+ documents worldwide.</td>
                             </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">USPTO / PAIR</td>
-                                <td class="px-6 py-4 text-sm text-slate-600">Official database for United States patents and applications.</td>
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-primary-600">USPTO / PAIR</td>
+                                <td class="px-6 py-4 text-sm text-slate-600">Official database for United States patents.</td>
                             </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">WIPO PATENTSCOPE</td>
-                                <td class="px-6 py-4 text-sm text-slate-600">Search International Patent Applications (PCT) and national collections.</td>
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-primary-600">WIPO PATENTSCOPE</td>
+                                <td class="px-6 py-4 text-sm text-slate-600">Search International (PCT) and national collections.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-4 text-right">
-                    <a href="https://patents.google.com/" target="_blank" class="text-xs font-semibold text-slate-400 hover:text-blue-600 transition-colors">Go to Google Patents &rarr;</a>
-                </div>
             </section>
 
             <!-- 7. Strategic Use -->
-            <section id="strategy" class="fade-in-section mb-20 scroll-mt-24">
-                <span class="text-slate-300 font-bold text-6xl opacity-20 -ml-4 select-none">07</span>
-                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-6 -mt-8">Strategic Use of Patent Info</h2>
-                <div class="prose prose-slate prose-lg text-slate-600">
-                    <p>Patents aren't just for protection; they are business assets. Companies use patent information to:</p>
-                    <ul class="list-disc pl-5">
-                        <li><strong>Avoid R&D Duplication:</strong> Checking if a solution already exists saves millions.</li>
-                        <li><strong>Identify Competitors:</strong> Seeing who is filing what reveals market direction.</li>
-                        <li><strong>Licensing Revenue:</strong> Monetizing unused patents by licensing them to others.</li>
-                        <li><strong>Defensive Blocking:</strong> Filing patents to prevent competitors from dominating a niche.</li>
-                    </ul>
+            <section id="strategy" class="fade-in-section mb-32 scroll-mt-24 relative">
+                <div class="absolute -left-12 -top-10 text-9xl font-bold text-slate-100 -z-10 select-none font-serif opacity-70">07</div>
+                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-8">Strategic Intelligence</h2>
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 md:p-12 text-white shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-12 opacity-10">
+                         <i data-lucide="chess-knight" class="w-64 h-64"></i>
+                    </div>
+                    <div class="relative z-10 grid md:grid-cols-2 gap-10">
+                        <div>
+                            <h3 class="text-2xl font-serif font-bold mb-4 text-primary-200">Business Assets</h3>
+                            <p class="text-slate-300 mb-6 leading-relaxed">Patents aren't just legal shields; they are valuable business assets used for leverage, negotiation, and revenue generation.</p>
+                            <ul class="space-y-3">
+                                <li class="flex items-center text-sm text-slate-200">
+                                    <i data-lucide="check-circle" class="w-4 h-4 mr-3 text-emerald-400"></i> Avoid R&D Duplication
+                                </li>
+                                <li class="flex items-center text-sm text-slate-200">
+                                    <i data-lucide="check-circle" class="w-4 h-4 mr-3 text-emerald-400"></i> Identify Competitors
+                                </li>
+                                <li class="flex items-center text-sm text-slate-200">
+                                    <i data-lucide="check-circle" class="w-4 h-4 mr-3 text-emerald-400"></i> Generate Licensing Revenue
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                            <h4 class="font-bold text-lg mb-2">Defensive Blocking</h4>
+                            <p class="text-sm text-slate-300">Filing patents strategically to create a "thicket" around your core technology, preventing competitors from innovating in your specific niche without infringing.</p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <!-- 8. Copyright -->
-            <section id="copyright" class="fade-in-section mb-20 scroll-mt-24">
-                <span class="text-slate-300 font-bold text-6xl opacity-20 -ml-4 select-none">08</span>
-                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-6 -mt-8">Copyright (India + US + Treaties)</h2>
-                <div class="bg-blue-50 p-6 rounded-lg mb-6">
-                    <p class="italic text-slate-700">"Copyright protects the expression of an idea, not the idea itself."</p>
-                </div>
-                <div class="space-y-4 text-slate-600">
-                    <p><strong>India:</strong> Governed by the Copyright Act, 1957. It grants author's lifetime + 60 years protection. Software is protected as a "literary work."</p>
-                    <p><strong>USA:</strong> Governed by the Copyright Act of 1976. Protection is typically author's life + 70 years.</p>
-                    <p><strong>Treaties:</strong> The <em>Berne Convention</em> ensures that copyright obtained in one signatory country is valid in all others without formal registration.</p>
-                </div>
-                <div class="mt-4">
-                    <a href="https://copyright.gov.in/" target="_blank" class="text-sm font-semibold text-blue-600 hover:underline">Official India Copyright Office &rarr;</a>
+            <section id="copyright" class="fade-in-section mb-32 scroll-mt-24 relative">
+                <div class="absolute -left-12 -top-10 text-9xl font-bold text-slate-100 -z-10 select-none font-serif opacity-70">08</div>
+                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-8">Copyright Law</h2>
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="flex-1 space-y-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-primary-500">
+                            <h3 class="font-bold text-slate-900">The Golden Rule</h3>
+                            <p class="text-slate-600 italic mt-2">"Copyright protects the expression of an idea, not the idea itself."</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-slate-50 p-4 rounded-xl">
+                                <strong class="block text-slate-900 mb-1">India</strong>
+                                <span class="text-sm text-slate-500">Lifetime + 60 Years</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-xl">
+                                <strong class="block text-slate-900 mb-1">USA</strong>
+                                <span class="text-sm text-slate-500">Lifetime + 70 Years</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-1 bg-white p-6 rounded-2xl border border-slate-100 shadow-lg">
+                        <h3 class="font-bold text-slate-900 mb-4">Software Protection</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">In most jurisdictions, software code is protected as a "Literary Work" under copyright law. This protects the specific code written but not the underlying algorithm or functionality.</p>
+                        <div class="flex gap-4">
+                            <a href="https://copyright.gov.in/" target="_blank" class="text-xs font-bold text-primary-600 hover:text-primary-800 uppercase tracking-wide flex items-center">
+                                India Copyright Office <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                            </a>
+                            <a href="https://en.wikipedia.org/wiki/Copyright_law_of_India" target="_blank" class="text-xs font-bold text-slate-400 hover:text-slate-600 uppercase tracking-wide flex items-center">
+                                Wiki <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <!-- 9. Trademarks -->
-            <section id="trademarks" class="fade-in-section mb-20 scroll-mt-24">
-                <span class="text-slate-300 font-bold text-6xl opacity-20 -ml-4 select-none">09</span>
-                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-6 -mt-8">Trademarks (India – 1999 Act)</h2>
-                <div class="prose prose-slate prose-lg text-slate-600">
-                    <p>The <strong>Trade Marks Act, 1999</strong> aligns Indian law with TRIPS. Key features include:</p>
-                    <ul class="list-disc pl-5">
-                        <li><strong>Registration:</strong> Valid for 10 years, renewable indefinitely.</li>
-                        <li><strong>Classes:</strong> Goods and services are categorized (Nice Classification).</li>
-                        <li><strong>Infringement:</strong> Unauthorized use of a similar mark for similar goods.</li>
-                        <li><strong>Passing Off:</strong> Common law remedy for unregistered trademarks where one party misrepresents goods as another's.</li>
-                    </ul>
+            <section id="trademarks" class="fade-in-section mb-32 scroll-mt-24 relative">
+                <div class="absolute -left-12 -top-10 text-9xl font-bold text-slate-100 -z-10 select-none font-serif opacity-70">09</div>
+                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-8">Trademarks</h2>
+                <div class="prose prose-slate prose-lg text-slate-600 max-w-none">
+                    <p>The <strong>Trade Marks Act, 1999</strong> aligns Indian law with TRIPS. It serves as a guarantee of quality and origin.</p>
+                    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 my-8 not-prose">
+                        <div class="bg-white p-4 rounded-xl text-center shadow-sm border border-slate-100">
+                            <div class="font-bold text-2xl text-primary-600 mb-1">10</div>
+                            <div class="text-xs text-slate-500 uppercase font-bold tracking-wider">Years Validity</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl text-center shadow-sm border border-slate-100">
+                            <div class="font-bold text-2xl text-primary-600 mb-1">45</div>
+                            <div class="text-xs text-slate-500 uppercase font-bold tracking-wider">Nice Classes</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl text-center shadow-sm border border-slate-100">
+                            <div class="font-bold text-2xl text-primary-600 mb-1">∞</div>
+                            <div class="text-xs text-slate-500 uppercase font-bold tracking-wider">Renewable</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl text-center shadow-sm border border-slate-100">
+                            <div class="font-bold text-2xl text-primary-600 mb-1">TM</div>
+                            <div class="text-xs text-slate-500 uppercase font-bold tracking-wider">Symbol</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 text-right">
+                    <a href="https://en.wikipedia.org/wiki/Trademark" target="_blank" class="text-xs font-medium text-slate-400 hover:text-primary-600 transition-colors inline-flex items-center">
+                        Wiki: Trademarks <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                    </a>
                 </div>
             </section>
 
             <!-- 10. Traditional Knowledge -->
-            <section id="traditional" class="fade-in-section mb-20 scroll-mt-24">
-                <span class="text-slate-300 font-bold text-6xl opacity-20 -ml-4 select-none">10</span>
-                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-6 -mt-8">Traditional Knowledge (TK)</h2>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <h3 class="font-bold text-slate-900 mb-2">What is TK?</h3>
-                        <p class="text-sm text-slate-600 leading-relaxed">Knowledge, know-how, skills and practices that are developed, sustained and passed on from generation to generation within a community, often forming part of its cultural or spiritual identity.</p>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-900 mb-2">Biopiracy & TKDL</h3>
-                        <p class="text-sm text-slate-600 leading-relaxed"><strong>Biopiracy</strong> is the unethical commercial exploitation of TK (e.g., the Turmeric and Basmati patent cases). India created the <strong>TKDL (Traditional Knowledge Digital Library)</strong> to document Ayurveda/Yoga, preventing foreign patents on existing knowledge.</p>
+            <section id="traditional" class="fade-in-section mb-32 scroll-mt-24 relative">
+                <div class="absolute -left-12 -top-10 text-9xl font-bold text-slate-100 -z-10 select-none font-serif opacity-70">10</div>
+                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-8">Traditional Knowledge</h2>
+                <div class="bg-amber-50 rounded-3xl p-8 border border-amber-100">
+                    <div class="grid md:grid-cols-2 gap-10">
+                        <div>
+                            <h3 class="font-bold text-amber-900 mb-2 flex items-center">
+                                <i data-lucide="scroll" class="w-5 h-5 mr-2"></i> What is TK?
+                            </h3>
+                            <p class="text-sm text-amber-900/80 leading-relaxed mb-4">Knowledge, know-how, skills and practices that are developed, sustained and passed on from generation to generation within a community.</p>
+                            <a href="https://en.wikipedia.org/wiki/Traditional_knowledge" target="_blank" class="text-xs font-semibold text-amber-800/60 hover:text-amber-900 inline-flex items-center">
+                                Wiki: Traditional Knowledge <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                            </a>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-amber-900 mb-2 flex items-center">
+                                <i data-lucide="shield-alert" class="w-5 h-5 mr-2"></i> Fighting Biopiracy
+                            </h3>
+                            <p class="text-sm text-amber-900/80 leading-relaxed mb-4">India created the <strong>TKDL (Traditional Knowledge Digital Library)</strong> to document Ayurveda & Yoga, successfully preventing foreign patents on existing ancient knowledge.</p>
+                            <a href="https://en.wikipedia.org/wiki/Biopiracy" target="_blank" class="text-xs font-semibold text-amber-800/60 hover:text-amber-900 inline-flex items-center">
+                                Wiki: Biopiracy <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <!-- 11. IPR in IT -->
-            <section id="it-software" class="fade-in-section mb-20 scroll-mt-24">
-                <span class="text-slate-300 font-bold text-6xl opacity-20 -ml-4 select-none">11</span>
-                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-6 -mt-8">IPR in Information Technology</h2>
-                <div class="prose prose-slate prose-lg text-slate-600">
-                    <p class="mb-4">Software sits at the intersection of Copyright and Patent law.</p>
-                    <ul class="list-disc pl-5">
-                        <li><strong>Copyright:</strong> Protects the source code and object code as literary works. This is the primary protection mode globally.</li>
-                        <li><strong>Patents:</strong> "Software per se" is often not patentable (e.g., Section 3(k) in India). However, software that produces a "technical effect" or is embedded in hardware can sometimes be patented.</li>
-                    </ul>
+            <section id="it-software" class="fade-in-section mb-32 scroll-mt-24 relative">
+                <div class="absolute -left-12 -top-10 text-9xl font-bold text-slate-100 -z-10 select-none font-serif opacity-70">11</div>
+                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-8">IPR in IT & Software</h2>
+                <div class="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden flex flex-col md:flex-row">
+                     <div class="bg-slate-900 p-8 flex items-center justify-center md:w-1/3">
+                         <i data-lucide="cpu" class="text-white w-20 h-20 opacity-80"></i>
+                     </div>
+                     <div class="p-8 md:w-2/3">
+                         <h3 class="font-bold text-lg mb-4">The Dual Protection Dilemma</h3>
+                         <ul class="space-y-4 mb-6">
+                             <li class="flex items-start">
+                                 <span class="bg-primary-100 text-primary-700 px-2 py-1 rounded text-xs font-bold mr-3 mt-1">COPYRIGHT</span>
+                                 <span class="text-sm text-slate-600">Protects source code as "literary work". Primary mode of global protection.</span>
+                             </li>
+                             <li class="flex items-start">
+                                 <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-bold mr-3 mt-1">PATENTS</span>
+                                 <span class="text-sm text-slate-600">Software per se is not patentable (Sec 3k). Must show "technical effect" or hardware integration.</span>
+                             </li>
+                         </ul>
+                         <div class="flex gap-4">
+                             <a href="https://en.wikipedia.org/wiki/Software_patent" target="_blank" class="text-xs font-semibold text-slate-400 hover:text-primary-600 inline-flex items-center">
+                                Wiki: Software Patents <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                             </a>
+                         </div>
+                     </div>
                 </div>
             </section>
 
-            <!-- 12. Semiconductors -->
-            <section id="semiconductor" class="fade-in-section mb-20 scroll-mt-24">
-                <span class="text-slate-300 font-bold text-6xl opacity-20 -ml-4 select-none">12</span>
-                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-6 -mt-8">SICLD Act, 2000</h2>
-                <p class="text-slate-600 mb-4">The <strong>Semiconductor Integrated Circuit Layout Design Act, 2000</strong> provides protection for the layout-designs of integrated circuits (ICs).</p>
-                <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg">
-                    <ul class="text-sm space-y-2 text-slate-700">
-                        <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Protects the 3D configuration of layers in a chip.</li>
-                        <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Valid for 10 years from the date of filing or first commercial exploitation.</li>
-                        <li class="flex items-center"><svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Essential for protecting investment in microchip design.</li>
-                    </ul>
+             <!-- 12. Semiconductors -->
+             <section id="semiconductor" class="fade-in-section mb-32 scroll-mt-24 relative">
+                <div class="absolute -left-12 -top-10 text-9xl font-bold text-slate-100 -z-10 select-none font-serif opacity-70">12</div>
+                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-8">SICLD Act, 2000</h2>
+                <div class="border-l-4 border-indigo-500 pl-6 py-2">
+                    <p class="text-lg text-slate-700 mb-4">Protection for layout-designs of integrated circuits (ICs).</p>
+                    <div class="flex gap-4 flex-wrap mb-4">
+                        <span class="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-bold">3D Configuration</span>
+                        <span class="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-bold">10 Year Validity</span>
+                        <span class="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-bold">Microchip Investment</span>
+                    </div>
+                    <a href="https://en.wikipedia.org/wiki/Integrated_circuit_layout_design_protection" target="_blank" class="text-xs font-medium text-slate-400 hover:text-indigo-600 transition-colors inline-flex items-center">
+                        Wiki: IC Layout Design <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                    </a>
                 </div>
             </section>
 
             <!-- 13. Treaties -->
-            <section id="treaties" class="fade-in-section mb-20 scroll-mt-24">
-                <span class="text-slate-300 font-bold text-6xl opacity-20 -ml-4 select-none">13</span>
-                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-6 -mt-8">International Treaties</h2>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <div class="p-4 bg-white border border-slate-200 shadow-sm rounded">
-                        <h4 class="font-bold text-blue-600">TRIPS</h4>
-                        <p class="text-xs text-slate-500 mt-1">Trade-Related Aspects of IPR. WTO agreement setting minimum standards.</p>
+            <section id="treaties" class="fade-in-section mb-32 scroll-mt-24 relative">
+                <div class="absolute -left-12 -top-10 text-9xl font-bold text-slate-100 -z-10 select-none font-serif opacity-70">13</div>
+                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-8">Global Treaties</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col">
+                        <h4 class="font-bold text-primary-600 mb-2">TRIPS</h4>
+                        <p class="text-xs text-slate-500 mb-3">WTO agreement setting minimum global standards.</p>
+                        <a href="https://en.wikipedia.org/wiki/TRIPS_Agreement" target="_blank" class="mt-auto text-xs font-semibold text-slate-400 hover:text-primary-600 inline-flex items-center">
+                            Wiki <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                        </a>
                     </div>
-                    <div class="p-4 bg-white border border-slate-200 shadow-sm rounded">
-                        <h4 class="font-bold text-blue-600">WIPO</h4>
-                        <p class="text-xs text-slate-500 mt-1">UN agency dedicated to the use of IP.</p>
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col">
+                        <h4 class="font-bold text-primary-600 mb-2">WIPO</h4>
+                        <p class="text-xs text-slate-500 mb-3">UN agency dedicated to the use of IP.</p>
+                        <a href="https://en.wikipedia.org/wiki/World_Intellectual_Property_Organization" target="_blank" class="mt-auto text-xs font-semibold text-slate-400 hover:text-primary-600 inline-flex items-center">
+                            Wiki <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                        </a>
                     </div>
-                    <div class="p-4 bg-white border border-slate-200 shadow-sm rounded">
-                        <h4 class="font-bold text-blue-600">PCT</h4>
-                        <p class="text-xs text-slate-500 mt-1">Patent Cooperation Treaty. Unified procedure for filing patents in 150+ countries.</p>
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col">
+                        <h4 class="font-bold text-primary-600 mb-2">PCT</h4>
+                        <p class="text-xs text-slate-500 mb-3">Unified procedure for filing patents in 150+ countries.</p>
+                        <a href="https://en.wikipedia.org/wiki/Patent_Cooperation_Treaty" target="_blank" class="mt-auto text-xs font-semibold text-slate-400 hover:text-primary-600 inline-flex items-center">
+                            Wiki <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                        </a>
                     </div>
-                    <div class="p-4 bg-white border border-slate-200 shadow-sm rounded">
-                        <h4 class="font-bold text-blue-600">Paris Convention</h4>
-                        <p class="text-xs text-slate-500 mt-1">Industrial Property (Patents, Trademarks).</p>
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col">
+                        <h4 class="font-bold text-primary-600 mb-2">Paris</h4>
+                        <p class="text-xs text-slate-500 mb-3">First major treaty for Industrial Property.</p>
+                        <a href="https://en.wikipedia.org/wiki/Paris_Convention_for_the_Protection_of_Industrial_Property" target="_blank" class="mt-auto text-xs font-semibold text-slate-400 hover:text-primary-600 inline-flex items-center">
+                            Wiki <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                        </a>
                     </div>
-                    <div class="p-4 bg-white border border-slate-200 shadow-sm rounded">
-                        <h4 class="font-bold text-blue-600">Berne Convention</h4>
-                        <p class="text-xs text-slate-500 mt-1">Literary and Artistic Works (Copyright).</p>
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col">
+                        <h4 class="font-bold text-primary-600 mb-2">Berne</h4>
+                        <p class="text-xs text-slate-500 mb-3">First major treaty for Copyrights.</p>
+                        <a href="https://en.wikipedia.org/wiki/Berne_Convention" target="_blank" class="mt-auto text-xs font-semibold text-slate-400 hover:text-primary-600 inline-flex items-center">
+                            Wiki <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                        </a>
                     </div>
-                    <div class="p-4 bg-white border border-slate-200 shadow-sm rounded">
-                        <h4 class="font-bold text-blue-600">Madrid Protocol</h4>
-                        <p class="text-xs text-slate-500 mt-1">International system for Trademark registration.</p>
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col">
+                        <h4 class="font-bold text-primary-600 mb-2">Madrid</h4>
+                        <p class="text-xs text-slate-500 mb-3">International system for Trademark registration.</p>
+                        <a href="https://en.wikipedia.org/wiki/Madrid_System" target="_blank" class="mt-auto text-xs font-semibold text-slate-400 hover:text-primary-600 inline-flex items-center">
+                            Wiki <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                        </a>
                     </div>
                 </div>
             </section>
 
              <!-- 14. Updates -->
-             <section id="updates" class="fade-in-section mb-32 scroll-mt-24">
-                <span class="text-slate-300 font-bold text-6xl opacity-20 -ml-4 select-none">14</span>
-                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-6 -mt-8">Recent Amendments & Case Studies</h2>
-                <div class="prose prose-slate prose-lg text-slate-600">
-                   <p>The IPR landscape is evolving rapidly to address AI, digital content, and global trade.</p>
-                   <ul class="list-disc pl-5">
-                       <li><strong>Patent Rules 2024 (India):</strong> Streamlined procedures, reduced timelines for examination, and simplified reporting of working statements (Form 27).</li>
-                       <li><strong>Novartis v. Union of India:</strong> A landmark case preventing "evergreening" of patents (patenting minor tweaks to existing drugs to extend monopoly).</li>
-                       <li><strong>SEP (Standard Essential Patents):</strong> Increasing litigation regarding FRAND (Fair, Reasonable, and Non-Discriminatory) licensing terms in the telecom sector.</li>
-                   </ul>
+             <section id="updates" class="fade-in-section mb-32 scroll-mt-24 relative">
+                <div class="absolute -left-12 -top-10 text-9xl font-bold text-slate-100 -z-10 select-none font-serif opacity-70">14</div>
+                <h2 class="font-serif text-3xl text-slate-900 font-bold mb-8">Recent Amendments</h2>
+                <div class="bg-white rounded-3xl p-8 border border-slate-200">
+                    <ul class="space-y-6">
+                        <li class="pl-4 border-l-2 border-primary-500">
+                            <strong class="block text-slate-900 text-lg">Patent Rules 2024 (India)</strong>
+                            <p class="text-slate-600 mt-1">Streamlined procedures, reduced timelines for examination, and simplified reporting of working statements (Form 27).</p>
+                        </li>
+                        <li class="pl-4 border-l-2 border-primary-500">
+                            <strong class="block text-slate-900 text-lg">Novartis v. Union of India</strong>
+                            <p class="text-slate-600 mt-1 mb-2">A landmark case preventing "evergreening" of patents (patenting minor tweaks to existing drugs to extend monopoly).</p>
+                            <a href="https://en.wikipedia.org/wiki/Novartis_v._Union_of_India_%26_Others" target="_blank" class="text-xs font-semibold text-slate-400 hover:text-primary-600 inline-flex items-center">
+                                Read Case Study <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </section>
 
             <!-- Footer -->
-            <footer class="border-t border-slate-200 pt-8 pb-12 text-center text-slate-400 text-sm">
-                <p>&copy; 2025 Intellectual Property Rights Guide. Information for educational purposes.</p>
+            <footer class="border-t border-slate-200 pt-12 pb-12 text-center">
+                <div class="font-serif text-2xl font-bold text-slate-300 mb-4">IPR Guide</div>
+                <p class="text-slate-400 text-sm">&copy; 2025 Intellectual Property Rights Guide. <br>Designed for educational purposes.</p>
             </footer>
 
         </main>
     </div>
 
     <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
         // Mobile Menu Logic
         const menuBtn = document.getElementById('menu-btn');
         const closeMenuBtn = document.getElementById('close-menu-btn');
@@ -446,8 +732,15 @@
 
         // Copy links from desktop to mobile
         desktopNavLinks.forEach(link => {
-            const mobileLink = link.cloneNode(true);
-            mobileLink.className = 'block px-4 py-2 text-lg font-medium text-slate-700 hover:bg-slate-50 rounded';
+            const mobileLink = document.createElement('a');
+            mobileLink.href = link.getAttribute('href');
+            // Extract just the text, not the span
+            const text = link.childNodes[2] ? link.childNodes[2].textContent.trim() : link.textContent.trim();
+            const num = link.querySelector('span') ? link.querySelector('span').textContent : '';
+            
+            mobileLink.innerHTML = `<span class="text-primary-500 font-mono mr-3 text-xs">${num}</span> ${text}`;
+            mobileLink.className = 'block px-4 py-3 text-lg font-medium text-slate-700 hover:bg-slate-50 border-b border-slate-50';
+            
             mobileLink.addEventListener('click', () => {
                 closeMobileMenu();
             });
@@ -456,13 +749,15 @@
 
         function openMobileMenu() {
             mobileMenu.classList.remove('hidden');
-            setTimeout(() => {
-                mobileMenuPanel.classList.remove('translate-x-full');
-            }, 10);
+            // Force reflow
+            void mobileMenu.offsetWidth;
+            mobileMenu.classList.remove('opacity-0');
+            mobileMenuPanel.classList.remove('translate-x-full');
         }
 
         function closeMobileMenu() {
             mobileMenuPanel.classList.add('translate-x-full');
+            mobileMenu.classList.add('opacity-0');
             setTimeout(() => {
                 mobileMenu.classList.add('hidden');
             }, 300);
@@ -477,7 +772,7 @@
         // Intersection Observer for Active Navigation State
         const observerOptions = {
             root: null,
-            rootMargin: '-20% 0px -70% 0px', // Trigger when section is near top
+            rootMargin: '-20% 0px -65% 0px', // Adjusted for better triggering
             threshold: 0
         };
 
